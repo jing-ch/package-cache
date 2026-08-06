@@ -3,8 +3,8 @@
 #include <iostream>
 
 int main() {
-    std::cout << Greet("Stranger") << std::endl;
-    LogMessage("This is a log message.");
+    std::cout << ReadPackage("numpy") << std::endl;
+    std::cout << ReadPackage("something_random") << std::endl;
     return 0;
 }
 

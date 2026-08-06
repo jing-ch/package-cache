@@ -3,4 +3,4 @@
 #include <string>
 
 // Place holder
-std::string Greet(const std::string& name);
+std::string ReadPackage(const std::string& name);
