@@ -3,8 +3,10 @@
 #include <iostream>
 
 int main() {
-    std::cout << ReadPackage("numpy") << std::endl;
-    std::cout << ReadPackage("something_random") << std::endl;
+    PackageCache cache;
+    std::cout << cache.Get("numpy") << std::endl;
+    std::cout << cache.Get("numpy") << std::endl;
+    std::cout << cache.Get("numpy") << std::endl;
     return 0;
 }
 
