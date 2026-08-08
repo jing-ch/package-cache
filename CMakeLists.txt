@@ -4,6 +4,9 @@ project(package_cache CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_compile_options(-fsanitize=address -g)
+add_link_options(-fsanitize=address)
+
 add_library(pkgcache src/package_cache.cpp src/logger.cpp)
 target_include_directories(pkgcache PUBLIC src)
 

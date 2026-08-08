@@ -6,7 +6,7 @@
 void TimedLoad(PackageCache& cache, const std::string& name);
 
 int main() {
-    PackageCache cache(250 * 1024 * 1024);
+    PackageCache cache(12000);
 
     const std::string& numpy = cache.Get("numpy");
     std::cout << "numpy size right after load: " << numpy.size() << std::endl;
@@ -16,7 +16,6 @@ int main() {
 
     cache.Get("scipy");
     cache.Get("torch");
-    cache.Get("bigpkg");
 
     // at this point numpy cached should be evicted
 
