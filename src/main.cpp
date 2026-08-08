@@ -6,12 +6,22 @@
 void TimedLoad(PackageCache& cache, const std::string& name);
 
 int main() {
-    PackageCache cache;
+    PackageCache cache(250 * 1024 * 1024);
 
-    TimedLoad(cache, "bigpkg");
-    TimedLoad(cache, "bigpkg");
-    TimedLoad(cache, "bigpkg");
-    TimedLoad(cache, "bigpkg");
+    const std::string& numpy = cache.Get("numpy");
+    std::cout << "numpy size right after load: " << numpy.size() << std::endl;
+
+    const std::string& pandas = cache.Get("pandas");
+    std::cout << "pandas size right after load: " << pandas.size() << std::endl;
+
+    cache.Get("scipy");
+    cache.Get("torch");
+    cache.Get("bigpkg");
+
+    // at this point numpy cached should be evicted
+
+    std::cout << "numpy size after eviction: " << numpy.size() << std::endl;
+    std::cout << "pandas size after eviction: " << pandas.size() << std::endl;
 
     return 0;
 }

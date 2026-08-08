@@ -11,7 +11,7 @@ std::string ReadPackage(const std::string& name) {
         LogMessage("Failed to open package file: " + path);
         return "";
     }
-    
+
     LogMessage("loaded from disk: " + name);
 
     std::stringstream buffer;
@@ -19,19 +19,33 @@ std::string ReadPackage(const std::string& name) {
     return buffer.str();
 }
 
+// constructor
+PackageCache::PackageCache(size_t max_bytes) {
+    max_bytes_ = max_bytes;
+}
 
-std::string PackageCache::Get(const std::string& name) {
+// returning a reference
+const std::string& PackageCache::Get(const std::string& name) {
     auto it = entries_.find(name);
     if (it != entries_.end()) {
         // return from memory
         return it->second;
     } else {
         // find it from disk and store and return it
-        std::string content = ReadPackage(name);
-        if (!content.empty()) {
-            entries_[name] = content;
-        }
-        return content;
+        entries_[name] = ReadPackage(name);
+        current_bytes_ += entries_[name].size();
+
+        EvictUntilUnderBudget();
+
+        return entries_[name];
     }
-    
+}
+
+void PackageCache::EvictUntilUnderBudget() {
+    while (current_bytes_ > max_bytes_ && !entries_.empty()) {
+        auto victim = entries_.begin();
+        LogMessage("evicting: " + victim->first);
+        current_bytes_ -= victim->second.size();
+        entries_.erase(victim);
+    }
 }
